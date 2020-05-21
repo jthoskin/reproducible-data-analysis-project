@@ -1,0 +1,23 @@
+position_names <- 
+  paste0("G_", c("p","c","1b","2b","3b","ss","lf","cf","rf", "dh"))
+
+tmp <- Appearances %>% 
+  filter(yearID == 2002) %>% 
+  group_by(playerID) %>%
+  summarize_at(position_names, sum) %>%
+  ungroup()
+
+pos <- tmp %>%
+  select(position_names) %>%
+  apply(., 1, which.max) 
+
+players <- tibble(playerID = tmp$playerID, POS = position_names[pos]) %>%
+  mutate(POS = str_to_upper(str_remove(POS, "G_"))) %>%
+  filter(POS != "P") %>%
+  right_join(players, by="playerID") %>%
+  filter(!is.na(POS)  & !is.na(salary))
+
+players <- Master %>%
+  select(playerID, nameFirst, nameLast, debut) %>%
+  mutate(debut = as.Date(debut)) %>%
+  right_join(players, by="playerID")

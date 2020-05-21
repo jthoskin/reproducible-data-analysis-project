@@ -1,0 +1,77 @@
+## Applied Data Analysis in Sport 10157
+## Hackathon 2
+## <u3206614>
+
+
+## Question 21 code goes here
+df_filtered <- df %>% filter(Season, between(Season, 1999, 2019)) %>%
+  select(Season, Round, Home.team, Away.team,
+         Home.score, Kicks, Marks, Handballs,
+         Goals, Inside.50s, Marks.Inside.50 )
+
+str(df_filtered)
+
+
+
+
+
+
+## Question 22 code goes here
+fit <- lm(Goals ~ Kicks + Marks + Handballs + Inside.50s + Marks.Inside.50, data = df_filtered)
+
+Summary(fit)
+
+tidy(fit, conf.int = TRUE)
+
+#The intercept coeffeicnet means that when the x axis is 0 goals will = 7.68
+#The slope coefficents for this output tells us that for each kick we will have -0.04 more goals scored,
+#for each mark we will have 0.0004 goals scored, 0.003 for each handball, 0.242 for each Inside.50 
+#and 0.378 goals for each Mark.Inside.50
+
+
+
+## Question 23 code goes here
+pairs(formula = ~ Goals + Kicks + Marks + Handballs + Inside.50s + Marks.Inside.50, data = df_filtered )
+
+car::vif(fit)
+
+sqrt(car::vif(fit))
+
+#This shows that there is no mulicolinearity between these variables as in the visulisation the none of
+#none of the variables show a linear relationship that could affect the model, this is shown in the statistical
+#test as all the variables are below the recomended limit of 5 when it comes to its VIF
+
+## Question 24 code goes here
+
+car::avPlots(fit)
+
+
+
+## Question 25 code goes here
+res <- residuals(fit)
+fitted <- predict(fit)
+
+ggplot(data = NULL, aes(x = fitted, y = res)) +
+geom_point() + 
+geom_hline(yintercept = 0, colour = "red", linetype = "dashed")
+
+#there is no homescedacity in this model because there is no constant variance across the plotted variables
+
+## Question 26 code goes here
+
+df_filtered <- mutate(df_filtered, exp_Goals = predict(fit, newdata = df_filtered))
+
+ggplot(data = df_filtered, aes(Goals, exp_Goals)) + 
+geom_point() + geom_abline(linetype = "dashed", colour = "red")
+
+#This plot shows the comparison of the exp_Goals in comparison to the actual number of Goals scored
+# what this details it that the exp_goals does not predict exactly the number of goals kicked otherwise
+#the observations would all be sitting on the red line wher for intance the point up the top right was 
+# underpredicted with 40 goals and the kciked about 44. 
+
+
+
+
+
+
+
