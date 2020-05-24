@@ -1,2 +1,2 @@
 # reproducible-data-analysis-project
-A reproducible data analysis project into the roster construcion of the Chicago Bulls. 
+This repository contains data, Rscript, figures and a RMD report created to form a Moneyball style analysis using NBA data to pick a starting 5 for the Chicago Bulls. This was done creating a possesion based formula in combination to a linear model to account for players with less oppurtunity than others. The findings are in the report and the data that was created can be found in the processed data folder along with all the other data that was used throughout the anlaysis. The Rscript files contain the step and code used throughout this project. Any figures that were created throughout the process can be found in the Figs folder. 
