@@ -1,0 +1,82 @@
+---
+title: "Chicago Bulls Analytical Recruitment Report"
+author: "Jarrad Hoskin"
+date: "23/05/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(dplyr)
+library(magrittr)
+library(knitr)
+library(tidyverse)
+library(broom)
+players <- read_csv("Data/processed/2018-19_nba_players_processed.csv")
+team <- read_csv("Data/processed/2018-19_nba_team_stats_combined.csv")
+players_per_game <- read_csv("Data/processed/2018-19_nba_per_game_stats_processed.csv")
+players_poss <- read_csv("Data/processed/nba_player_possesion_exp_points.csv")
+```
+The following report provides player recommendations for the Chicago Bulls 2020 season. Initially, analytical models were developed to analyse player and team data from the 2018-19 NBA season. Using this model, individual player statistics were analysed to give expected statistics per game. Expected player statistics were then combined with player salaries. Recommendations were then made for five starting players (one from each position) who would fit within a $118 million salary cap with funds remaining to fill the entire roster. The analysis and recommendations aimed to use a "Moneyball" approach whereby undervalued players were identified. 
+
+### Analytical methods and results ###
+To discover players that had a greater impact on winning, a model was created using key performance statistics such as 3-point and 2-point shots made, total rebounds and assists. These statistics were used in the model as they were deemed to have a positive impact on the number of team wins, during the exploratory analysis phase. This trend is highlighted for 3-point shots in the figure below, whereby teams with a greater number of 3-point shots made generally had more wins. 
+
+```{r 3P_wins, fig.height=3.25, fig.width=5, message=FALSE, warning=FALSE}
+team <- read_csv("Data/processed/2018-19_nba_team_stats_combined.csv")
+
+x3P_wins <-team %>% ggplot(aes(x = `3P`, y = W)) + geom_point(aes(colour = W)) + 
+scale_colour_gradient(low = "green", high = "red")
+
+x3P_wins + labs(title = "The impact of 3-point shots on team wins",
+                subtitle = "Teams with a better win record tend to make more 3-point shots",
+                x = "Three pointers made",
+                y = "Wins") + theme_classic() + theme(plot.title = element_text(size = 11, face = "bold"))
+```
+
+Using this model, the influence of the inputted variables on the total number of points scored per game was computed. This determined that 3-point shots made had the greatest positive influence on the number of points scored. For each game, the model predicts players will score 3.35 points for every 3-point shot made. Two-point shots made had a similar influence, with the model predicting players will score 2.49 points for every 2-point shot made per game. Total rebounds and assists only demonstrated slight influences on the total number of points scored per game. 
+
+```{r model_linear}
+lm_players <- lm(Pts_per_game ~ 
+                   x3P_game + x2P_game + TRB_per_game + AST_per_game, data = players_per_game)
+
+tidy(lm_players, confit.int = TRUE)
+```
+A per-possession player metric was then developed to determine the expected points and other game statistics per game a team would achieve if the team was compromised of only that player. The total number of possessions was calculated using field goals attempted (2- and 3-point shots attempted), free throws attempted, offensive rebounds and turnovers. A factor of 0.44 was used to account for the end-of-possession from free throw attempts. To exclude unreliable data, the player metric was limited to only include players with 400 possessions or greater during the season. This metric was then integrated within the model to normalise the number of player opportunities to a per-possession basis. Normalisation allows for a more accurate comparison between players and teams as it removes differences in opportunity and pace of play. 
+
+Using the per-possession adjusted model, players were distinguished based on their effect on final team scores. This process also assisted in identifying undervalued players in the league. The outcome of this model is represented in the figure below which details expected points (if the whole team was compromised of the single player) compared to player salary. It must be noted the metric did favour centres as they usually have lower posessions and take shots closer to the rim, rather than 3-point shots. 
+
+```{r exp_points_salary, fig.height=3.25, fig.width=5}
+
+players_poss %>% ggplot(aes(x = salary/1000000, y = exp_points, color = Pos)) + 
+  geom_point() +
+  xlab("Salary (Millions)") + labs(title = "Expected points in comparison to salary",
+                                   subtitle = "Players with high expected points are not always highly paid",
+                                   y = "Expected points") + theme_classic() + theme(plot.title = element_text(size = 11, face = "bold"))
+
+```
+
+### Player Selection recommendation ###
+When selecting the following players, the most important factor taken into account was 3-point shooting as this has the greatest influence on points scored and team wins compared to other variables.   
+
+### Point Guard - Stephen Curry $37,457,154 ###
+Stephen Curry is the best 3P shooting point guard in the league as supported by our metrics. Steph was given the highest expected 3-point shots per game for all PGs with 22. When combined with his 43.7% 3-point shot percentage, Steph would fit in well to this team as the main ball handler. On top of these impressive 3-point numbers, Steph also had one of the highest predicted points per games for all PGs with 118.5. With 22.5 predicted assists per game, allowing involvement of other shooters, Steph is the perfect player to lead this team of shooters. 
+
+### Shooting Guard - Danny Green $10,000,000  ###
+Danny Green was shown by this model to be the best 3-point shooter with the highest expected 3-point shots of 29.9 per game of all players, and the highest expected points per game of 138 for the SG position. These numbers are also supported by Danny's 3-point shooting percentage of 45.5%. Danny also gives the ability to guiard the best ball-handlers in the league, with his expected steals per game sitting at 11. Danny is also predicted to have 19 assists per game, suggesting Danny can play as a second ball-hander from the SG position. 
+
+### Small Forward - Robert Covington $10,464,092 ###
+Robert Covington excelled in two major areas of this model: 3P shooting and defence. These factors perfectly fit the role he would play on the wing when gaurding the oppositions' best forward and taking open 3-point shots. The model predicted Rober to score 20.27 3-point shots per game, which is second for SFs. Robert also had the second highest expected steals per game with the model predicting 17.66.  
+
+### Power Forward - PJ Tucker $7,959,537 ###
+PJ Tucker was found to fit well into all categories assessed in this model including shooting 3-pointers, rebounding and passing and had an expected points per game of 13.4. Tucker had the second highest expected 3-point shots per game across all players with 29.81 and had the highest expected steals per game of 26.95. Additionally, Tucker would also be a great back-up to the centre for rebounding, with the modelling showing Tucker's rebounding rate was one of the highest for PFs with an expected 97.8 rebounds per game. Combining this with an expected 19.6 expected assists per game suggests Tucker would fit the PF role perfectly and also have versatility to switch between roles as needed. 
+
+### Centre - Clint Capela $15,793,104 
+CLint Capela had the highest expected points as a player from this model at 188. Although Capela does not shoot 3-pointers, his role would be to take the shots closer to rim, rebound missed shots and block shots. Modelling for this role supports Capela for the centre position. Capela had one of the highest expected rebound per game rates of 132 and a high expected offensive rebounds per game of 46.5. Adding to Capela's defence are an expected number of 15.9 blocks per game, showing effective basket defence.  
+
+### Summary ###
+Using a possession-adjusted model, recommendations for a balanced starting five players have been made. These recommendations were made with an emphasis on 3-point shooting, rebounding and defence. A considerable portion of the salary cap remains to complete the rest of the roster. 
+
+### Salary cap used - $81,673,887 ###
+### Salary cap remaining - $36,326,113 ###

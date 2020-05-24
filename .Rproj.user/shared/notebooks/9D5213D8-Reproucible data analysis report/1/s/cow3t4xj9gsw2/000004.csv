@@ -1,0 +1,7 @@
+"0",""
+"0","players_poss %>% ggplot(aes(x = salary/1000000, y = exp_points, color = Pos)) + "
+"0","  geom_point() +"
+"0","  xlab(""Salary (Millions)"") + labs(title = ""Expected points in comparison to salary"","
+"0","                                   subtitle = ""Players with high expected points not always highly paid"","
+"0","                                   y = ""Expected points"") + theme_classic()"
+"0",""

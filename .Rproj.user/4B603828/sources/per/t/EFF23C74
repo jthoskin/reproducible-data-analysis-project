@@ -1,0 +1,33 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1590292422042.000,
+    "dirty" : false,
+    "encoding" : "",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "EFF23C74",
+    "lastKnownWriteTime" : 1152921504606846976,
+    "last_content_update" : 1590292422042,
+    "path" : null,
+    "project_path" : null,
+    "properties" : {
+        "cacheKey" : "4B0A23F",
+        "caption" : "players_poss",
+        "contentUrl" : "grid_resource/gridviewer.html?env=&obj=players_poss&cache_key=4B0A23F",
+        "displayedObservations" : 261,
+        "environment" : "",
+        "expression" : "players_poss",
+        "object" : "players_poss",
+        "preview" : 0,
+        "totalObservations" : 261,
+        "variables" : 16
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 10,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_dataframe"
+}

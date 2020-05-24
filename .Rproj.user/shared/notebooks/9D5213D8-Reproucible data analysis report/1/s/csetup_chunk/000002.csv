@@ -1,0 +1,59 @@
+"0","knitr::opts_chunk$set(echo = FALSE)"
+"0","library(dplyr)"
+"0","library(magrittr)"
+"0","library(knitr)"
+"0","library(tidyverse)"
+"0","library(broom)"
+"0","players <- read_csv(""Data/processed/2018-19_nba_players_processed.csv"")"
+"2","Parsed with column specification:
+cols(
+  .default = col_double(),
+  player_name = [31mcol_character()[39m,
+  Pos = [31mcol_character()[39m,
+  Tm = [31mcol_character()[39m,
+  FG_category = [31mcol_character()[39m
+)
+"
+"2","See spec(...) for full column specifications.
+"
+"0","team <- read_csv(""Data/processed/2018-19_nba_team_stats_combined.csv"")"
+"2","Parsed with column specification:
+cols(
+  .default = col_double(),
+  Team = [31mcol_character()[39m
+)
+"
+"2","See spec(...) for full column specifications.
+"
+"0","players_per_game <- read_csv(""Data/processed/2018-19_nba_per_game_stats_processed.csv"")"
+"2","Parsed with column specification:
+cols(
+  .default = col_double(),
+  player_name = [31mcol_character()[39m,
+  Pos = [31mcol_character()[39m,
+  Tm = [31mcol_character()[39m
+)
+"
+"2","See spec(...) for full column specifications.
+"
+"0","players_poss <- read_csv(""Data/processed/nba_player_possesion_exp_points.csv"")"
+"2","Parsed with column specification:
+cols(
+  player_name = [31mcol_character()[39m,
+  Pos = [31mcol_character()[39m,
+  salary = [32mcol_double()[39m,
+  FG_per_game = [32mcol_double()[39m,
+  x3P_game = [32mcol_double()[39m,
+  x2P_game = [32mcol_double()[39m,
+  FT_per_game = [32mcol_double()[39m,
+  ORB_per_game = [32mcol_double()[39m,
+  DRB_per_game = [32mcol_double()[39m,
+  TRB_per_game = [32mcol_double()[39m,
+  AST_per_game = [32mcol_double()[39m,
+  STL_per_game = [32mcol_double()[39m,
+  BLK_per_game = [32mcol_double()[39m,
+  TOV_per_game = [32mcol_double()[39m,
+  player_poss = [32mcol_double()[39m,
+  exp_points = [32mcol_double()[39m
+)
+"

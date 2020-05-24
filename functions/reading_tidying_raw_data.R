@@ -1,3 +1,8 @@
+library(dplyr)
+library(magrittr)
+library(tidyverse)
+
+
 #following code used to import the raw data and save into global enviroment#
 player_salaries <- read_csv("Data/raw/2018-19_nba_player-salaries.csv")
 player_statistics <- read_csv("Data/raw/2018-19_nba_player_statistics.csv")
